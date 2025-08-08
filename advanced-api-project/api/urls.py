@@ -27,3 +27,17 @@ urlpatterns = [
     path('books/<int:pk>/update/', BookUpdateView.as_view(), name='book-update'), # Update book
     path('books/<int:pk>/delete/', BookDeleteView.as_view(), name='book-delete'), # Delete book
 ]
+from django.urls import path, include
+
+urlpatterns = [
+    # other paths...
+    path('api/', include('api.urls')),
+]
+from django.urls import path
+from .views import BookUpdateView, BookDeleteView
+
+urlpatterns = [
+    # existing URLs
+    path('books/update/<int:pk>/', BookUpdateView.as_view(), name='book-update'),
+    path('books/delete/<int:pk>/', BookDeleteView.as_view(), name='book-delete'),
+]
