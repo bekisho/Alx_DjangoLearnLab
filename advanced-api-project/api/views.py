@@ -201,3 +201,5 @@ class BookListView(generics.ListAPIView):
     search_fields = ['title', 'author']
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']  # default ordering
+from django_filters import rest_framework as filters
+filter_backends = [filters.DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
