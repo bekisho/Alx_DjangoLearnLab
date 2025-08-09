@@ -26,6 +26,28 @@ class BookListView(generics.ListAPIView):
     # Optional: default ordering
     ordering = ['title']
 
+    from rest_framework import generics, filters
+from rest_framework.permissions import IsAuthenticatedOrReadOnly, IsAuthenticated
+from django_filters.rest_framework import DjangoFilterBackend
+from .models import Book
+from .serializers import BookSerializer
+
+class BookListCreateView(generics.ListCreateAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticatedOrReadOnly]  # Read-only for unauthenticated, create allowed if authenticated
+
+    filter_backends = [DjangoFilterBackend, filters.OrderingFilter, filters.SearchFilter]
+    filterset_fields = ['title', 'author', 'publication_year']  # Allow filtering by these fields
+    search_fields = ['title', 'author']  # Enable search on title and author
+    ordering_fields = ['publication_year', 'title']  # Allow ordering by these fields
+
+class BookRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = Book.objects.all()
+    serializer_class = BookSerializer
+    permission_classes = [IsAuthenticated]  # Only authenticated users can update or delete
+
+
 
 from rest_framework import generics, permissions
 from django_filters.rest_framework import DjangoFilterBackend
