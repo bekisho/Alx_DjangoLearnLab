@@ -4,6 +4,7 @@ from rest_framework.filters import SearchFilter, OrderingFilter
 from .models import Book
 from .serializers import BookSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
+import django_filters
 
 class BookListView(generics.ListAPIView):
     queryset = Book.objects.all()
@@ -69,3 +70,14 @@ class BookDeleteView(generics.DestroyAPIView):
 
     from django_filters import rest_framework as django_filters
 from rest_framework import filters
+
+filter_backends = [
+    django_filters.DjangoFilterBackend,
+    filters.OrderingFilter,
+    filters.SearchFilter,
+]
+
+# Example: enable filtering, searching, and ordering
+filterset_fields = ['title', 'author', 'publication_year']
+search_fields = ['title', 'author']
+ordering_fields = ['title', 'publication_year']
